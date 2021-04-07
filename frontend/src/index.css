@@ -7,7 +7,7 @@ body{
   margin:0;
   height: 100vh;
   font-size: 1.6rem;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -73,7 +73,7 @@ button {
   border-radius: 0.5rem;
   border: 0.1rem #a4a4a4 solid;
   font-size: 1.6rem;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f8f8f8;
@@ -119,7 +119,7 @@ a.brand { /*a with class brand*/
 }
 
 .col-2{
-  flex: 2 1 50rem;
+  flex: 1 1 50rem;
 }
 
 .row.center{ 
@@ -136,7 +136,9 @@ img.medium { /* every image with class medium*/
 }
 
 img.large {
+  max-width: 46rem;
   width: 100%;
+  border: 0.1rem #c0c0c0 solid;
 }
 
 /* CARD */
@@ -169,10 +171,27 @@ img.large {
   color: #404040;
 }
 
-.error {
+/*ALERT*/
+.danger {
   color: #a02020;
 }
 
 .success {
   color: #20a020;
+}
+
+.alert {
+  padding: 1rem;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
+
+.alert-info {
+  color: #2020a0;
+  background-color: #e0e0ff;
+}
+
+.alert-danger {
+  color: #a02020;
+  background-color: #ffe0e0;
 }

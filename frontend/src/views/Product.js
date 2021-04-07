@@ -47,7 +47,7 @@ export default function Product(props) {
                                             )
                                             :
                                             (
-                                                <span className="error">Unavailable</span>
+                                                <span className="danger">Unavailable</span>
                                             )}
                                     </div>
                                 </div>
