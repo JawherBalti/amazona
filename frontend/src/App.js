@@ -2,6 +2,7 @@ import React from 'react'
 import Home from './views/Home';
 import Product from './views/Product';
 import { Route } from 'react-router-dom'
+import Cart from './views/Cart';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         </div>
       </header>
       <main>
+        <Route exact path="/cart/:id?" component={Cart}></Route>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/product/:id" component={Product}></Route>
       </main>
