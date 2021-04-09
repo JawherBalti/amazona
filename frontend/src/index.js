@@ -11,11 +11,16 @@ import promiseMiddleware from 'redux-promise';
 import reducer from './reducers'
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, thunk)(createStore);
-
+const initialState = {
+  cart: {
+    cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
+  }
+}
 ReactDOM.render(
   <Provider
     store={createStoreWithMiddleware(
       reducer,
+      initialState,
       window.__REDUX_DEVTOOLS_EXTENSION__ &&
       window.__REDUX_DEVTOOLS_EXTENSION__()
     )}

@@ -5,3 +5,6 @@ export const GET_PRODUCTS_FAIL = 'get_products_fail'
 export const PRODUCT_DETAILS_REQUEST = 'product_details_request'
 export const PRODUCT_DETAILS_SUCCESS = 'product_details_success'
 export const PRODUCT_DETAILS_FAIL = 'product_details_fail'
+
+export const CART_ADD_ITEM = 'cart_add_item'
+export const CART_REMOVE_ITEM = 'cart_remove_item'

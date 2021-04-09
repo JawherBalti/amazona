@@ -3,18 +3,23 @@ import Home from './views/Home';
 import Product from './views/Product';
 import { Route } from 'react-router-dom'
 import Cart from './views/Cart';
+import {Link } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 function App() {
+  const cart = useSelector(state => state.cartReducer)
   return (
 
     <div className="grid-container">
       <header className="row">
         <div>
-          <a href="/" className="brand">amazona</a>
+          <Link to="/" className="brand">amazona</Link>
         </div>
         <div>
-          <a href="/cart">Cart</a>
-          <a href="/signin">Sign in</a>
+          <Link to="/cart">Cart {cart.cartItems.length > 0 && (
+            <span className="badge">{cart.cartItems.length}</span>
+          )}</Link>
+          <Link to="/signin">Sign in</Link>
         </div>
       </header>
       <main>
