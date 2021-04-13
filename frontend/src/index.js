@@ -12,7 +12,10 @@ import reducer from './reducers'
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, thunk)(createStore);
 const initialState = {
-  cart: {
+  userSignInReducer: {
+    userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
+  },
+  cartReducer: {
     cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
   }
 }
