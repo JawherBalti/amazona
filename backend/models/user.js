@@ -24,12 +24,6 @@ const UserSchema = mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    token: {
-        type: String,
-    },
-    tokenExp: {
-        type: Number
     }
 })
 
@@ -58,26 +52,16 @@ UserSchema.methods.comparePassword = function (plainPassword, cb) {
 
 UserSchema.methods.generateToken = function (cb) {
     var user = this;
-    var token = jwt.sign(user._id.toHexString(), process.env.SECRET)
-    var oneHour = moment().add(1, 'hour').valueOf();
+    const token = jwt.sign(
+        {
+            _id: user._id,
+        }, process.env.SECRET,
+        {
+            expiresIn: "7d" //token valid for 7 days
+        }
+    )
+    cb(null, token);
 
-    user.tokenExp = oneHour;
-    user.token = token;
-    user.save(function (err, user) {
-        if (err) return cb(err)
-        cb(null, user);
-    })
-}
-
-UserSchema.statics.findByToken = function (token, cb) {
-    var user = this;
-
-    jwt.verify(token, 'secret', function (err, decode) {
-        user.findOne({ "_id": decode, "token": token }, function (err, user) {
-            if (err) return cb(err);
-            cb(null, user);
-        })
-    })
 }
 
 const User = mongoose.model("User", UserSchema)

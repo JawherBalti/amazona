@@ -26,20 +26,21 @@ const login = (req, res) => {
         .then(user => {
             user.comparePassword(password, (err, isMatch) => {
                 if (!isMatch)
-                    return res.json({ loginSuccess: false, message: "Wrong password" })
+                    return res.status(403).json({ loginSuccess: false, message: "Invalid email or password" })
 
-                user.generateToken((err, user) => {
+                user.generateToken((err, token) => {
                     if (err) return res.status(400).send(err)
-                    res.cookie("w_authExp", user.tokenExp)
-                    res.cookie("w_auth", user.token).status(200).json({
-                        loginSuccess: true, userId: user._id
+                    res.status(200).json({
+                        loginSuccess: true,
+                        user,
+                        token
                     })
                 })
             })
         }).catch(err => {
-            return res.json({
+            return res.status(404).json({
                 loginSuccess: false,
-                message: "Auth failed, email not found" + err
+                message: "Invalid email or password"
             })
         })
 }
