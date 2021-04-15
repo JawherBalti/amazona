@@ -5,10 +5,11 @@ export const signin = (email, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } })
     try {
         const request = await axios.post("/api/user/signin", { email, password })
+        console.log(request);
         dispatch({ type: USER_SIGNIN_SUCCESS, payload: request })
         localStorage.setItem("userInfo", JSON.stringify(request))
     } catch (err) {
-        dispatch({ type: USER_SIGNIN_FAIL, payload: err.response && err.response.data.message ? err.response.data.message : err.message })
+        dispatch({ type: USER_SIGNIN_FAIL, payload: err.response && err.response.data ? err.response.data : err.message })
     }
 }
 

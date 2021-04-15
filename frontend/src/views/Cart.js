@@ -59,8 +59,9 @@ export default function Cart(props) {
                     </ul>
                 )}
             </div>
-            <div className="col-1">
-                <div className="card card-body">
+            
+            <div className="col-1 total">
+                <div className="card card-body ">
                     <ul>
                         <li>
                             <h2>Number of items: {cart.cartItems.reduce((acc, curr) => acc + curr.qty, 0)}. Total: ${cart.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0)}</h2>

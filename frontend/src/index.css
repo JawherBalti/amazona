@@ -138,6 +138,10 @@ a.brand { /*a with class brand*/
   flex: 1 1 50rem;
 }
 
+.total {
+  margin-top: 6rem;
+}
+
 .min-30 {
   min-width: 30rem;
 }

@@ -9,8 +9,8 @@ export default function Signin(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const signIn = useSelector(state => state.userSignInReducer)
-    const { loading, userInfo, error } = signIn
+    const signinReducer = useSelector(state => state.userSignInReducer)
+    const { loading, userInfo, error } = signinReducer
 
     const redirect = props.location.search ? props.location.search.split("=")[1] : "/"
 
@@ -26,7 +26,7 @@ export default function Signin(props) {
             props.history.push(redirect)
         }
     }, [props.history, redirect, userInfo])
-    
+
     return (
         <div>
             {loading ? (<LoadingBox></LoadingBox>) :
@@ -52,7 +52,7 @@ export default function Signin(props) {
                             <div>
                                 <label />
                                 <div>New customer? {' '}
-                                    <Link to="/register">Create an account</Link>
+                                    <Link to={"/register"}>Create an account</Link>
                                 </div>
                             </div>
                         </form>
@@ -77,7 +77,7 @@ export default function Signin(props) {
                             <div>
                                 <label />
                                 <div>New customer? {' '}
-                                    <Link to="/register">Create an account</Link>
+                                    <Link to={"/register"}>Create an account</Link>
                                 </div>
                             </div>
                         </form>
