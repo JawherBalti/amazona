@@ -14,8 +14,8 @@ const register = async (req, res) => {
             password
         });
         user.save()
-            .then(() => res.status(200).json({ message: "user " + user + " added successfully!" }))
-            .catch(error => res.status(400).json({ error }))
+            .then(() => res.status(200).json({ user }))
+            .catch(error => res.status(400).json({ message: "Email already in use!" }))
     }
 }
 const login = (req, res) => {
@@ -26,12 +26,11 @@ const login = (req, res) => {
         .then(user => {
             user.comparePassword(password, (err, isMatch) => {
                 if (!isMatch)
-                    return res.status(403).json({ loginSuccess: false, message: "Invalid email or password" })
+                    return res.status(403).json({ message: "Invalid email or password" })
 
                 user.generateToken((err, token) => {
                     if (err) return res.status(400).send(err)
                     res.status(200).json({
-                        loginSuccess: true,
                         user,
                         token
                     })
@@ -39,7 +38,6 @@ const login = (req, res) => {
             })
         }).catch(err => {
             return res.status(404).json({
-                loginSuccess: false,
                 message: "Invalid email or password"
             })
         })
