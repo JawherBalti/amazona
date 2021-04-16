@@ -8,6 +8,8 @@ import Cart from './views/Cart';
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { signout } from './actions/user';
+import Shipping from './views/Shipping';
+import Payment from './views/Payment';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -46,6 +48,8 @@ function App() {
         <Route exact path="/product/:id" component={Product}></Route>
         <Route exact path="/signin" component={Signin}></Route>
         <Route exact path="/register" component={Register}></Route>
+        <Route exact path="/shipping" component={Shipping}></Route>
+        <Route exact path="/payment" component={Payment}></Route>
       </main>
       <footer className="row center">All rights reserved</footer>
     </div>

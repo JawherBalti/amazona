@@ -9,10 +9,10 @@ export default function Register(props) {
     const [email, setEmail] = useState("")
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
+    const [alert, setAlert] = useState("")
 
     const registerReducer = useSelector(state => state.userRegisterReducer)
     const { loading, userInfo, error } = registerReducer
-
 
     const dispatch = useDispatch()
 
@@ -20,7 +20,6 @@ export default function Register(props) {
         e.preventDefault()
         if (password1 === password2) {
             dispatch(register(name, email, password1))
-            props.history.push("/signin")
         }
         else {
             alert("Passwords do not match!")

@@ -5,7 +5,7 @@ const register = async (req, res) => {
     const { name, email, password } = req.body
     let user = await User.findOne({ email })
     if (user) {
-        return res.send({ message: "email existe" })
+        return res.status(400).json({ message: "email existe" })
     }
     else {
         const user = new User({
