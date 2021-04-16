@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const userRoute = require('./routes/user')
+const orderRoute = require('./routes/order')
 const data = require('./data')
 
 dotenv.config()
@@ -10,6 +11,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/api/user', userRoute)
+app.use('/api/order', orderRoute)
 
 app.get("/api/products", (req, res) => {
     res.send(data.products)
