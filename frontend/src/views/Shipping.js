@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveShippingAddress } from '../actions/cart'
 import CheckoutSteps from '../components/CheckoutSteps'
+import axios from 'axios'
 
 export default function Shipping(props) {
-
     const cart = useSelector(state => state.cartReducer)
     const { shippingAddress } = cart
     
@@ -30,6 +30,12 @@ export default function Shipping(props) {
         dispatch(saveShippingAddress(data))
         props.history.push("/payment")
     }
+    useEffect(() =>  {
+        async function fetchData() {
+            const countriesData = await axios.get("https://countriesnow.space/api/v0.1/countries/states")
+          }
+          fetchData();
+    }, [])
     return (
         <div>
             <CheckoutSteps step1 step2></CheckoutSteps>
@@ -42,8 +48,8 @@ export default function Shipping(props) {
                     <input id="name" type="text" placeholder="Enter your name" value={name} onChange={e => setName(e.target.value)} required />
                 </div>
                 <div>
-                    <label htmlFor="address">Address</label>
-                    <input id="address" type="text" placeholder="Enter your address" value={address} onChange={e => setAddress(e.target.value)} required />
+                    <label htmlFor="country">Country</label>
+                    <input id="country" type="text" placeholder="Enter your country" value={country} onChange={e => setCountry(e.target.value)} required />
                 </div>
                 <div>
                     <label htmlFor="city">City</label>
@@ -53,10 +59,9 @@ export default function Shipping(props) {
                     <label htmlFor="postalCode">Postal Code</label>
                     <input id="postalCode" type="text" placeholder="Enter your postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} required />
                 </div>
-
                 <div>
-                    <label htmlFor="country">Country</label>
-                    <input id="country" type="text" placeholder="Enter your country" value={country} onChange={e => setCountry(e.target.value)} required />
+                    <label htmlFor="address">Address</label>
+                    <input id="address" type="text" placeholder="Enter your address" value={address} onChange={e => setAddress(e.target.value)} required />
                 </div>
                 <div>
                     <label />
