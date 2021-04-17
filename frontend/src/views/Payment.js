@@ -12,7 +12,7 @@ export default function Payment(props) {
     }
 
     const [paymentMethod, setPaymentMetod] = useState("PayPal")
-    console.log(paymentMethod);
+
     const dispatch = useDispatch()
 
     const submitHandler = (e) => {

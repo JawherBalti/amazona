@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/user'
 import LoadingBox from '../components/LoadingBox'
@@ -9,7 +9,6 @@ export default function Register(props) {
     const [email, setEmail] = useState("")
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
-    const [alert, setAlert] = useState("")
 
     const registerReducer = useSelector(state => state.userRegisterReducer)
     const { loading, userInfo, error } = registerReducer

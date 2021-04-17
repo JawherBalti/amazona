@@ -10,7 +10,17 @@ export const CART_ADD_ITEM = 'cart_add_item'
 export const CART_REMOVE_ITEM = 'cart_remove_item'
 export const CART_SAVE_SHIPPING_ADDRESS = 'cart_save_shipping_address'
 export const CART_SAVE_PAYMENT_METHOD = 'cart_save_payment_method'
- 
+export const CART_EMPTY = 'cart_empty'
+
+export const ORDER_CREATE_REQUEST = 'order_create_request'
+export const ORDER_CREATE_SUCCESS = 'order_create_success'
+export const ORDER_CREATE_FAIL = 'order_create_fail'
+export const ORDER_CREATE_RESET = 'order_create_reset'
+
+export const ORDER_DETAILS_REQUEST = 'ORDER_DETAILS_REQUEST'
+export const ORDER_DETAILS_SUCCESS = 'ORDER_DETAILS_SUCCESS'
+export const ORDER_DETAILS_FAIL = 'ORDER_DETAILS_FAIL'
+
 export const USER_REGISTER_REQUEST = 'user_register_request'
 export const USER_REGISTER_SUCCESS = 'user_register_success'
 export const USER_REGISTER_FAIL = 'user_register_fail'

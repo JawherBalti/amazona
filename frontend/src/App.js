@@ -11,6 +11,7 @@ import { signout } from './actions/user';
 import Shipping from './views/Shipping';
 import Payment from './views/Payment';
 import PlaceOrder from './views/PlaceOrder';
+import Order from './views/Order';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -52,6 +53,8 @@ function App() {
         <Route exact path="/shipping" component={Shipping}></Route>
         <Route exact path="/payment" component={Payment}></Route>
         <Route exact path="/placeorder" component={PlaceOrder}></Route>
+        <Route exact path="/order/:id" component={Order}></Route>
+
       </main>
       <footer className="row center">All rights reserved</footer>
     </div>
