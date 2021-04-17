@@ -15,9 +15,15 @@ const placeOrder = (req, res) => {
             user: req.user._id
         })
         order.save()
-            .then(() => res.status(201).send({ message: "New order created", order: createdOrder }))
-            .catch(error => res.status(400).json({ message: "Error while creating order!" }))
+            .then(order => res.status(201).send({ message: 'New Order Created', order }))
+            .catch(err => res.status(400).send({ message: 'error' }))
     }
 }
 
-module.exports = { placeOrder }
+const getOrder = (req, res) => {
+    Order.findById(req.params.id)
+    .then(order => res.send(order))
+    .catch(err => res.status(404).send({message: "Order not found!"}))
+}
+
+module.exports = { placeOrder, getOrder }
