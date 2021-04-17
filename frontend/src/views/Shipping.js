@@ -7,12 +7,14 @@ import axios from 'axios'
 export default function Shipping(props) {
     const cart = useSelector(state => state.cartReducer)
     const { shippingAddress } = cart
-    
+
     const [name, setName] = useState(shippingAddress.name)
     const [address, setAddress] = useState(shippingAddress.address)
     const [city, setCity] = useState(shippingAddress.city)
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
     const [country, setCountry] = useState(shippingAddress.country)
+    const [countryPicker, setCountryPicker] = useState([])
+    const [cityPicker, setCityPicker] = useState([])
 
     const signinReducer = useSelector(state => state.userSignInReducer)
     const { userInfo } = signinReducer
@@ -30,12 +32,16 @@ export default function Shipping(props) {
         dispatch(saveShippingAddress(data))
         props.history.push("/payment")
     }
-    useEffect(() =>  {
+    useEffect(() => {
         async function fetchData() {
             const countriesData = await axios.get("https://countriesnow.space/api/v0.1/countries/states")
-          }
-          fetchData();
-    }, [])
+            setCountryPicker(countriesData.data.data)
+            console.log(country);
+            console.log(countriesData.data.data);
+            setCityPicker(countriesData.data.data.filter(countryData => countryData.name === country)[0].states)
+        }
+        fetchData();
+    }, [country])
     return (
         <div>
             <CheckoutSteps step1 step2></CheckoutSteps>
@@ -49,11 +55,21 @@ export default function Shipping(props) {
                 </div>
                 <div>
                     <label htmlFor="country">Country</label>
-                    <input id="country" type="text" placeholder="Enter your country" value={country} onChange={e => setCountry(e.target.value)} required />
+                    <select onChange={e => setCountry(e.target.value)}>
+                        <option value={country}>{country}</option>
+                        {countryPicker.map((country, i) =>
+                            <option key={i} value={country.name}>{country.name}</option>
+                        )}
+                    </select>
                 </div>
                 <div>
                     <label htmlFor="city">City</label>
-                    <input id="city" type="text" placeholder="Enter your city name" value={city} onChange={e => setCity(e.target.value)} required />
+                    <select onChange={e => setCity(e.target.value)}>
+                        <option value={city}>{city}</option>
+                        {cityPicker.map((city, i) =>
+                            <option key={i} value={city.name}>{city.name}</option>
+                        )}
+                    </select>
                 </div>
                 <div>
                     <label htmlFor="postalCode">Postal Code</label>

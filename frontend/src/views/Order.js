@@ -31,8 +31,8 @@ export default function Order(props) {
                                         <p>
                                             <strong>Name:</strong> {order.data.shippingAddress.name} <br />
                                             <strong>Address:</strong> {order.data.shippingAddress.address},
-                                            {order.data.shippingAddress.city},
                                             {order.data.shippingAddress.postalCode},
+                                            {order.data.shippingAddress.city},
                                             {order.data.shippingAddress.country}
                                         </p>
                                         {

@@ -16,7 +16,6 @@ import Order from './views/Order';
 function App() {
   const cart = useSelector(state => state.cartReducer)
   const currentUser = useSelector(state => state.userSignInReducer)
-  console.log(currentUser);
 
   const dispatch = useDispatch()
   const signoutHandler = () => {
