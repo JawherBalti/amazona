@@ -22,8 +22,26 @@ const placeOrder = (req, res) => {
 
 const getOrder = (req, res) => {
     Order.findById(req.params.id)
-    .then(order => res.send(order))
-    .catch(err => res.status(404).send({message: "Order not found!"}))
+        .then(order => res.send(order))
+        .catch(err => res.status(404).send({ message: "Order not found!" }))
 }
 
-module.exports = { placeOrder, getOrder }
+const updateOrder = (req, res) => {
+    Order.findById(req.params.id)
+        .then(order => {
+            order.isPaid = true
+            order.paidAt = Date.now()
+            order.paymentResult = {
+                id: req.body.id,
+                status: req.body.status,
+                update_time: req.body.update_time,
+                email_address: req.body.email_address
+            }
+            order.save()
+                .then((order) => res.send({ message: "Order paid", order }))
+                .catch(err => res.status(400).send({ message: "An error occured during payment!" }))
+        })
+        .catch(err => res.status(404).send({ message: "Order not found!" }))
+}
+
+module.exports = { placeOrder, getOrder, updateOrder }

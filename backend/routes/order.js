@@ -6,5 +6,6 @@ const orderRoute = express.Router()
 
 orderRoute.post("/", isAuth, orderController.placeOrder)
 orderRoute.get("/:id", orderController.getOrder)
+orderRoute.put(":id/pay", isAuth, orderController.updateOrder)
 
 module.exports = orderRoute
