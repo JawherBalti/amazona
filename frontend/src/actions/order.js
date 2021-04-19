@@ -18,14 +18,14 @@ export const createOrder = (order) => async (dispatch, getState) => {
     }
 }
 
-export const detailsOrder =( orderId) => async (dispatch, getState) => {
+export const detailsOrder = (orderId) => async (dispatch, getState) => {
     dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId })
     const { userSignInReducer: { userInfo } } = getState()
     try {
-        const request = await axios.get(`/api/order/${orderId}`, {
+        const { data } = await axios.get(`/api/order/${orderId}`, {
             headers: { authorization: `Bearer ${userInfo.data.token}` }
         })
-        dispatch({ type: ORDER_DETAILS_SUCCESS, payload: request })
+        dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data })
     } catch (error) {
         dispatch({ type: ORDER_DETAILS_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
     }

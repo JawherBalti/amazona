@@ -1,27 +1,54 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { detailsOrder } from '../actions/order'
+import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2'
 
 export default function Order(props) {
     const orderId = props.match.params.id
     const orderDetails = useSelector(state => state.orderDetailsReducer)
-
     const { order, loading, error } = orderDetails
-    console.log(order);
+
+    const [sdkReady, setSdkReady] = useState(false)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(detailsOrder(orderId))
-    }, [dispatch, orderId])
+        const addPayPalScript = async () => {
+            const { data } = await axios.get('/api/config/paypal')
+            const script = document.createElement("script")
+            script.type = 'text/javascript';
+            script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+            script.async = true;
+            script.onload = () => {
+                setSdkReady(true);
+            };
+            document.body.appendChild(script)
+        }
+        if (!order) {
+            dispatch(detailsOrder(orderId))
+        } else {
+            if (!order.isPaid) {
+                if (!window.paypal) {
+                    addPayPalScript()
+                } else {
+                    setSdkReady(true)
+                }
+            }
+        }
+    }, [dispatch, order, orderId, sdkReady])
 
+    const successPaymentHandler = () => {
+        console.log(1);
+    }
     return loading ? (<LoadingBox></LoadingBox>) :
         error ? (<MessageBox variant="danger">{error}</MessageBox>)
             : (
                 <div>
-                    <h1>Order {order.data._id}</h1>
+                    <h1>Order ID: {order._id}</h1>
                     <div className="row top">
                         <div className="col-2">
                             <ul>
@@ -29,15 +56,15 @@ export default function Order(props) {
                                     <div className="card card-body">
                                         <h2>Shipping</h2>
                                         <p>
-                                            <strong>Name:</strong> {order.data.shippingAddress.name} <br />
-                                            <strong>Address:</strong> {order.data.shippingAddress.address},
-                                            {order.data.shippingAddress.postalCode},
-                                            {order.data.shippingAddress.city},
-                                            {order.data.shippingAddress.country}
+                                            <strong>Name:</strong> {order.shippingAddress.name} <br />
+                                            <strong>Address:</strong> {order.shippingAddress.address},
+                                            {order.shippingAddress.postalCode},
+                                            {order.shippingAddress.city},
+                                            {order.shippingAddress.country}
                                         </p>
                                         {
-                                            order.data.isDelivered ?
-                                                <MessageBox variant="success">Delivered at: {order.data.deliveredAt}</MessageBox> :
+                                            order.isDelivered ?
+                                                <MessageBox variant="success">Delivered at: {order.deliveredAt}</MessageBox> :
                                                 <MessageBox variant="danger">Not delivered</MessageBox>
                                         }
                                     </div>
@@ -46,11 +73,11 @@ export default function Order(props) {
                                     <div className="card card-body">
                                         <h2>Payment</h2>
                                         <p>
-                                            <strong>Method:</strong> {order.data.paymentMethod} <br />
+                                            <strong>Method:</strong> {order.paymentMethod} <br />
                                         </p>
                                         {
-                                            order.data.isPaid ?
-                                                <MessageBox variant="success">Paid at: {order.data.paidAt}</MessageBox> :
+                                            order.isPaid ?
+                                                <MessageBox variant="success">Paid at: {order.paidAt}</MessageBox> :
                                                 <MessageBox variant="danger">Not paid</MessageBox>
                                         }
                                     </div>
@@ -59,7 +86,7 @@ export default function Order(props) {
                                     <div className="card card-body">
                                         <h2>Order Items</h2>
                                         <ul>
-                                            {order.data.orderItems.map(item => (
+                                            {order.orderItems.map(item => (
                                                 <li key={item.product}>
                                                     <div className="row">
                                                         <div>
@@ -86,19 +113,19 @@ export default function Order(props) {
                                     <li>
                                         <div className="row">
                                             <div>Items:</div>
-                                            <div>${order.data.itemsPrice.toFixed(2)}</div>
+                                            <div>${order.itemsPrice.toFixed(2)}</div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="row">
                                             <div>Shipping:</div>
-                                            <div>${order.data.shippingPrice.toFixed(2)}</div>
+                                            <div>${order.shippingPrice.toFixed(2)}</div>
                                         </div>
                                     </li>
                                     <li>
                                         <div className="row">
                                             <div>Tax:</div>
-                                            <div>${order.data.taxPrice.toFixed(2)}</div>
+                                            <div>${order.taxPrice.toFixed(2)}</div>
                                         </div>
                                     </li>
                                     <li>
@@ -107,10 +134,20 @@ export default function Order(props) {
                                                 <strong>Total:</strong>
                                             </div>
                                             <div>
-                                                <strong>${order.data.totalPrice.toFixed(2)}</strong>
+                                                <strong>${order.totalPrice.toFixed(2)}</strong>
                                             </div>
                                         </div>
                                     </li>
+                                    {
+                                        !order.isPaid && (
+                                            <li>
+                                                {
+                                                    !sdkReady ? <LoadingBox></LoadingBox> :
+                                                        <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}></PayPalButton>
+                                                }
+                                            </li>
+                                        )
+                                    }
                                 </ul>
                             </div>
                         </div>
