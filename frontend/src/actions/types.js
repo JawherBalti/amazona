@@ -17,9 +17,14 @@ export const ORDER_CREATE_SUCCESS = 'order_create_success'
 export const ORDER_CREATE_FAIL = 'order_create_fail'
 export const ORDER_CREATE_RESET = 'order_create_reset'
 
-export const ORDER_DETAILS_REQUEST = 'ORDER_DETAILS_REQUEST'
-export const ORDER_DETAILS_SUCCESS = 'ORDER_DETAILS_SUCCESS'
-export const ORDER_DETAILS_FAIL = 'ORDER_DETAILS_FAIL'
+export const ORDER_DETAILS_REQUEST = 'order_details_request'
+export const ORDER_DETAILS_SUCCESS = 'order_details_success'
+export const ORDER_DETAILS_FAIL = 'order_details_fail'
+
+export const ORDER_PAY_REQUEST = 'ORDER_pay_request'
+export const ORDER_PAY_SUCCESS = 'ORDER_pay_success'
+export const ORDER_PAY_FAIL = 'ORDER_pay_fail'
+export const ORDER_PAY_RESET = 'ORDER_pay_reset'
 
 export const USER_REGISTER_REQUEST = 'user_register_request'
 export const USER_REGISTER_SUCCESS = 'user_register_success'
