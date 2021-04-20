@@ -45,7 +45,6 @@ const updateOrder = (req, res) => {
 }
 
 const myOrderList = (req, res) => {
-    console.log(req.user._id)
     Order.find({user: req.user._id})
     .then(orders => res.send(orders))
     .catch(err => res.status(404).send({message: "Not Found"}))

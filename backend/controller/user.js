@@ -18,6 +18,7 @@ const register = async (req, res) => {
             .catch(error => res.status(400).json({ message: "Email already in use!" }))
     }
 }
+
 const login = (req, res) => {
     const { email, password } = req.body
     const encryptedEmail = cryptojs.HmacSHA256(email, process.env.EMAIL_KEY).toString()
@@ -42,5 +43,12 @@ const login = (req, res) => {
             })
         })
 }
-module.exports = { register, login }
+
+const getUser = (req, res) => {
+    User.findById(req.params.id)
+        .then(user => res.send(user))
+        .catch(err => res.status(404).send({ message: "User not found!" }))
+}
+
+module.exports = { register, login, getUser }
 
