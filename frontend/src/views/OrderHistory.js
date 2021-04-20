@@ -7,10 +7,18 @@ import { myOrders } from '../actions/order'
 export default function OrderHistory(props) {
     const myOrderList = useSelector(state => state.myOrderReducer)
     const { loading, error, orders } = myOrderList
+
+    const userSignIn = useSelector(state => state.userSignInReducer)
+    const { userInfo } = userSignIn
+
+    if (!userInfo) {
+        props.history.push("/signin")
+    }
+
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(myOrders())
-    },(dispatch))
+    }, [dispatch])
     return (
         <div>
             <div>Order history</div>

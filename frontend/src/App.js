@@ -13,6 +13,7 @@ import Payment from './views/Payment';
 import PlaceOrder from './views/PlaceOrder';
 import Order from './views/Order';
 import OrderHistory from './views/OrderHistory';
+import Profile from './views/Profile';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -37,6 +38,9 @@ function App() {
               <div className="dropdown">
                 <Link to="#">{currentUser.userInfo.data.user.name} <i className="fa fa-caret-down"></i></Link>
                 <ul className="dropdown-content">
+                <li>
+                    <Link to="/profile">User Profile</Link>
+                  </li>
                   <li>
                     <Link to="/orderhistory">Order History</Link>
                   </li>
@@ -60,6 +64,8 @@ function App() {
         <Route exact path="/placeorder" component={PlaceOrder}></Route>
         <Route exact path="/order/:id" component={Order}></Route>
         <Route exact path="/orderhistory" component={OrderHistory}></Route>
+        <Route exact path="/profile" component={Profile}></Route>
+
       </main>
       <footer className="row center">All rights reserved</footer>
     </div>
