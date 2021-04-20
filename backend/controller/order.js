@@ -44,4 +44,11 @@ const updateOrder = (req, res) => {
         .catch(err => res.status(404).send({ message: "Order not found!" }))
 }
 
-module.exports = { placeOrder, getOrder, updateOrder }
+const myOrderList = (req, res) => {
+    console.log(req.user._id)
+    Order.find({user: req.user._id})
+    .then(orders => res.send(orders))
+    .catch(err => res.status(404).send({message: "Not Found"}))
+}
+
+module.exports = { placeOrder, getOrder, updateOrder, myOrderList }
