@@ -21,10 +21,14 @@ export const ORDER_DETAILS_REQUEST = 'order_details_request'
 export const ORDER_DETAILS_SUCCESS = 'order_details_success'
 export const ORDER_DETAILS_FAIL = 'order_details_fail'
 
-export const ORDER_PAY_REQUEST = 'ORDER_pay_request'
-export const ORDER_PAY_SUCCESS = 'ORDER_pay_success'
-export const ORDER_PAY_FAIL = 'ORDER_pay_fail'
-export const ORDER_PAY_RESET = 'ORDER_pay_reset'
+export const ORDER_PAY_REQUEST = 'order_pay_request'
+export const ORDER_PAY_SUCCESS = 'order_pay_success'
+export const ORDER_PAY_FAIL = 'order_pay_fail'
+export const ORDER_PAY_RESET = 'order_pay_reset'
+
+export const MY_ORDER_LIST_REQUEST = 'my_order_list_request'
+export const MY_ORDER_LIST_SUCCESS = 'my_order_list_success'
+export const MY_ORDER_LIST_FAIL = 'my_order_list_fail'
 
 export const USER_REGISTER_REQUEST = 'user_register_request'
 export const USER_REGISTER_SUCCESS = 'user_register_success'
