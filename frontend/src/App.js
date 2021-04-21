@@ -14,10 +14,12 @@ import PlaceOrder from './views/PlaceOrder';
 import Order from './views/Order';
 import OrderHistory from './views/OrderHistory';
 import Profile from './views/Profile';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
-  const currentUser = useSelector(state => state.userSignInReducer)
+  const userSignIn = useSelector(state => state.userSignInReducer)
+  const { userInfo } = userSignIn
 
   const dispatch = useDispatch()
   const signoutHandler = () => {
@@ -34,11 +36,11 @@ function App() {
             <span className="badge">{cart.cartItems.length}</span>
           )}</Link>
           {
-            currentUser.userInfo ? (
+            userInfo ? (
               <div className="dropdown">
-                <Link to="#">{currentUser.userInfo.data.user.name} <i className="fa fa-caret-down"></i></Link>
+                <Link to="#">{userInfo.data.user.name} <i className="fa fa-caret-down"></i></Link>
                 <ul className="dropdown-content">
-                <li>
+                  <li>
                     <Link to="/profile">User Profile</Link>
                   </li>
                   <li>
@@ -51,23 +53,46 @@ function App() {
               </div>
             ) : <Link to="/signin">Sign in</Link>
           }
-        </div>
-      </header>
-      <main>
-        <Route exact path="/cart/:id?" component={Cart}></Route>
-        <Route exact path="/" component={Home}></Route>
-        <Route exact path="/product/:id" component={Product}></Route>
-        <Route exact path="/signin" component={Signin}></Route>
-        <Route exact path="/register" component={Register}></Route>
-        <Route exact path="/shipping" component={Shipping}></Route>
-        <Route exact path="/payment" component={Payment}></Route>
-        <Route exact path="/placeorder" component={PlaceOrder}></Route>
-        <Route exact path="/order/:id" component={Order}></Route>
-        <Route exact path="/orderhistory" component={OrderHistory}></Route>
-        <Route exact path="/profile" component={Profile}></Route>
 
-      </main>
-      <footer className="row center">All rights reserved</footer>
+          {
+            userInfo && userInfo.data.user.isAdmin && (
+            
+            <div className="dropdown">
+              <Link to="#admin">Admin {' '} <i className="fa fa-caret-down"></i></Link>
+              <ul className="dropdown-content">
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/products">Products</Link>
+                </li>
+                <li>
+                  <Link to="/orders">Orders</Link>
+                </li>
+                <li>
+                  <Link to="/users">Users</Link>
+                </li>
+              </ul>
+            </div>
+
+              )}
+            </div>
+      </header>
+        <main>
+          <Route exact path="/cart/:id?" component={Cart}></Route>
+          <Route exact path="/" component={Home}></Route>
+          <Route exact path="/product/:id" component={Product}></Route>
+          <Route exact path="/signin" component={Signin}></Route>
+          <Route exact path="/register" component={Register}></Route>
+          <Route exact path="/shipping" component={Shipping}></Route>
+          <Route exact path="/payment" component={Payment}></Route>
+          <Route exact path="/placeorder" component={PlaceOrder}></Route>
+          <Route exact path="/order/:id" component={Order}></Route>
+          <Route exact path="/orderhistory" component={OrderHistory}></Route>
+          <PrivateRoute exact path="/profile" component={Profile}></PrivateRoute>
+
+        </main>
+        <footer className="row center">All rights reserved</footer>
     </div>
 
   );
