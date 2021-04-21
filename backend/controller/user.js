@@ -1,5 +1,6 @@
 const { User } = require("../models/user")
 const cryptojs = require('crypto-js')
+const bcrypt = require('bcrypt')
 
 const register = async (req, res) => {
     const { name, email, password } = req.body
@@ -50,5 +51,31 @@ const getUser = (req, res) => {
         .catch(err => res.status(404).send({ message: "User not found!" }))
 }
 
-module.exports = { register, login, getUser }
+const updateUser = (req, res) => {
+    const saltRounds = 10;
+
+    User.findById(req.user._id)
+        .then(user => {
+            user.name = req.body.name || user.name //if the name field is empty, use the old username
+            if (req.body.password) {
+                //     bcrypt.genSalt(saltRounds)
+                //         .then(salt => {
+                //             bcrypt.hash(req.body.password, salt)
+                //                 .then(hash => user.password = hash)
+                //                 .catch(err => res.status(400).send({ message: "error1" }))
+                //         })
+                //         .catch(err => res.status(400).send({ message: "error2" }))
+                user.password = req.body.password
+            }
+            user.save()
+                .then(user => {
+                    user.generateToken((err, token) => {
+                        if (err) return res.status(400).send(err)
+                        res.status(200).json({ user, token })
+                    })
+                })
+        })
+        .catch(err => res.status(404).send({ message: "User not found" }))
+}
+module.exports = { register, login, getUser, updateUser }
 
