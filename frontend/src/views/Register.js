@@ -11,7 +11,7 @@ export default function Register(props) {
     const [password2, setPassword2] = useState("")
 
     const registerReducer = useSelector(state => state.userRegisterReducer)
-    const { loading, userInfo, error } = registerReducer
+    const { loading, error } = registerReducer
 
     const dispatch = useDispatch()
 

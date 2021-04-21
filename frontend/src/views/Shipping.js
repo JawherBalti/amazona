@@ -36,9 +36,12 @@ export default function Shipping(props) {
         async function fetchData() {
             const countriesData = await axios.get("https://countriesnow.space/api/v0.1/countries/states")
             setCountryPicker(countriesData.data.data)
-            console.log(country);
-            console.log(countriesData.data.data);
-            setCityPicker(countriesData.data.data.filter(countryData => countryData.name === country)[0].states)
+            const cityData = countriesData.data.data.filter(countryData => (countryData.name === country))
+            if (cityData.length === 0) {
+                setCityPicker("")
+            } else {
+                setCityPicker(cityData[0].states)
+            }
         }
         fetchData();
     }, [country])
@@ -64,12 +67,16 @@ export default function Shipping(props) {
                 </div>
                 <div>
                     <label htmlFor="city">City</label>
-                    <select onChange={e => setCity(e.target.value)}>
-                        <option value={city}>{city}</option>
-                        {cityPicker.map((city, i) =>
-                            <option key={i} value={city.name}>{city.name}</option>
-                        )}
-                    </select>
+                    {cityPicker ?
+                        (
+                            <select onChange={e => setCity(e.target.value)}>
+                                <option value={city}>{city}</option>
+                                {cityPicker.map((city, i) =>
+                                    <option key={i} value={city.name}>{city.name}</option>
+                                )}
+                            </select>
+                        ) : <select> <option value="">Select your city</option> </select>
+                        }
                 </div>
                 <div>
                     <label htmlFor="postalCode">Postal Code</label>

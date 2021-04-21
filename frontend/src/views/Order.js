@@ -32,7 +32,7 @@ export default function Order(props) {
             };
             document.body.appendChild(script)
         }
-        if (!order || successPay || order && order._id !== orderId) {
+        if (!order || successPay || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET }) // to prevent infinite loop (page keeps reloading)
             dispatch(detailsOrder(orderId))
         } else {
@@ -44,7 +44,7 @@ export default function Order(props) {
                 }
             }
         }
-    }, [dispatch, order, orderId, sdkReady])
+    }, [dispatch, order, orderId, sdkReady, successPay])
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(order, paymentResult))
