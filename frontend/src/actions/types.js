@@ -34,6 +34,11 @@ export const USER_REGISTER_REQUEST = 'user_register_request'
 export const USER_REGISTER_SUCCESS = 'user_register_success'
 export const USER_REGISTER_FAIL = 'user_register_fail'
 
+export const USER_UPDATE_REQUEST = 'USER_UPDATE_REQUEST'
+export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS'
+export const USER_UPDATE_FAIL = 'USER_UPDATE_FAIL'
+export const USER_UPDATE_RESET = 'USER_UPDATE_RESET'
+
 export const USER_SIGNIN_REQUEST = 'user_signin_request'
 export const USER_SIGNIN_SUCCESS = 'user_signin_success'
 export const USER_SIGNIN_FAIL = 'user_signin_fail'
