@@ -19,28 +19,29 @@ export default function Order(props) {
     const { error: errorPay, success: successPay, loading: loadingPay } = orderPay
 
     const dispatch = useDispatch()
-
     useEffect(() => {
         const addPayPalScript = async () => {
-            const { data } = await axios.get('/api/config/paypal')
-            const script = document.createElement("script")
+            const { data } = await axios.get('/api/config/paypal');
+            const sb = "sb"
+            const script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+            script.src = `https://www.paypal.com/sdk/js?client-id=${sb}`; //should be data instead of sb but for some reason data does not work!!!!
             script.async = true;
             script.onload = () => {
                 setSdkReady(true);
             };
-            document.body.appendChild(script)
-        }
+            document.body.appendChild(script);
+        };
+
         if (!order || successPay || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET }) // to prevent infinite loop (page keeps reloading)
             dispatch(detailsOrder(orderId))
         } else {
             if (!order.isPaid) {
                 if (!window.paypal) {
-                    addPayPalScript()
+                    addPayPalScript();
                 } else {
-                    setSdkReady(true)
+                    setSdkReady(true);
                 }
             }
         }
@@ -146,16 +147,21 @@ export default function Order(props) {
                                     {
                                         !order.isPaid && (
                                             <li>
-                                                {
-                                                    !sdkReady ? <LoadingBox></LoadingBox> :
-                                                        <>
-                                                            {
-                                                                errorPay && (<MessageBox variant="danger">{errorPay}</MessageBox>)
-                                                            }
-                                                            {loadingPay && <LoadingBox></LoadingBox>}
-                                                            <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}></PayPalButton>
-                                                        </>
-                                                }
+                                                {!sdkReady ? (
+                                                    <LoadingBox></LoadingBox>
+                                                ) : (
+                                                    <>
+                                                        {errorPay && (
+                                                            <MessageBox variant="danger">{errorPay}</MessageBox>
+                                                        )}
+                                                        {loadingPay && <LoadingBox></LoadingBox>}
+
+                                                        <PayPalButton
+                                                            amount={order.totalPrice}
+                                                            onSuccess={successPaymentHandler}
+                                                        ></PayPalButton>
+                                                    </>
+                                                )}
                                             </li>
                                         )
                                     }

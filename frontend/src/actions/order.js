@@ -35,7 +35,7 @@ export const payOrder = (order, paymentResult) => async (dispatch, getState) => 
     dispatch({ type: ORDER_PAY_REQUEST, payload: { order, paymentResult } })
     const { userSignInReducer: { userInfo } } = getState()
     try {
-        const { data } = await axios.put(`/api/order/${order._id}/pay`, paymentResult, {
+        const { data } = await axios.put(`/api/order/pay/${order._id}`, paymentResult, {
             headers: { authorization: `Bearer ${userInfo.data.token}` }
         })
         dispatch({ type: ORDER_PAY_SUCCESS, payload: data })
