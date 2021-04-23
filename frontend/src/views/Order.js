@@ -23,6 +23,7 @@ export default function Order(props) {
         const addPayPalScript = async () => {
             const { data } = await axios.get('/api/config/paypal');
             const sb = "sb"
+            const notdata = ""
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = `https://www.paypal.com/sdk/js?client-id=${sb}`; //should be data instead of sb but for some reason data does not work!!!!
