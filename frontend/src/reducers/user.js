@@ -1,4 +1,19 @@
-import { USER_UPDATE_RESET, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS } from "../actions/types";
+import { USER_UPDATE_RESET, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USER_REGISTER_RESET } from "../actions/types";
+
+export const userRegisterReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_REGISTER_REQUEST:
+            return { loading: true }
+        case USER_REGISTER_SUCCESS:
+            return { loading: false, userInfo: action.payload }
+        case USER_REGISTER_FAIL:
+            return { loading: false, error: action.payload }
+        case USER_REGISTER_RESET:
+            return {}
+        default:
+            return state
+    }
+}
 
 export const userSignInReducer = (state = {}, action) => {
     switch (action.type) {
@@ -15,13 +30,13 @@ export const userSignInReducer = (state = {}, action) => {
     }
 }
 
-export const userRegisterReducer = (state = {}, action) => {
+export const activateAccountReducer = (state = {}, action) => {
     switch (action.type) {
-        case USER_REGISTER_REQUEST:
+        case ACTIVATE_ACCOUNT_REQUEST:
             return { loading: true }
-        case USER_REGISTER_SUCCESS:
-            return { loading: false, userInfo: action.payload }
-        case USER_REGISTER_FAIL:
+        case ACTIVATE_ACCOUNT_SUCCESS:
+            return { loading: false, info: action.payload }
+        case ACTIVATE_ACCOUNT_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

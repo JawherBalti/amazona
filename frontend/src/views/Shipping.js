@@ -59,37 +59,43 @@ export default function Shipping(props) {
                 <div>
                     <label htmlFor="country">Country</label>
                     <select onChange={e => setCountry(e.target.value)}>
-                        <option value={country}>{country}</option>
+                        <option value={country}>{countryPicker[0] ? country : "Select your country"}</option>
                         {countryPicker.map((country, i) =>
                             <option key={i} value={country.name}>{country.name}</option>
                         )}
                     </select>
                 </div>
-                <div>
-                    <label htmlFor="city">City</label>
-                    {cityPicker ?
-                        (
-                            <select onChange={e => setCity(e.target.value)}>
-                                <option value={city}>{city}</option>
-                                {cityPicker.map((city, i) =>
-                                    <option key={i} value={city.name}>{city.name}</option>
-                                )}
-                            </select>
-                        ) : <select> <option value="">Select your city</option> </select>
+                {country && (
+                    <div>
+                        <label htmlFor="city">City</label>
+                        {cityPicker ?
+                            (
+                                <select onChange={e => setCity(e.target.value)}>
+                                    <option value={city}>{city ? city : "Select your city"}</option>
+                                    {cityPicker.map((city, i) =>
+                                        <option key={i} value={city.name}>{city.name}</option>
+                                    )}
+                                </select>
+                            ) : <select> <option value="">Select your city</option> </select>
                         }
-                </div>
-                <div>
-                    <label htmlFor="postalCode">Postal Code</label>
-                    <input id="postalCode" type="text" placeholder="Enter your postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} required />
-                </div>
-                <div>
-                    <label htmlFor="address">Address</label>
-                    <input id="address" type="text" placeholder="Enter your address" value={address} onChange={e => setAddress(e.target.value)} required />
-                </div>
-                <div>
-                    <label />
-                    <button className="primary" type="submit">Continue</button>
-                </div>
+                    </div>
+                )}
+                {city && (
+                    <>
+                        <div>
+                            <label htmlFor="postalCode">Postal Code</label>
+                            <input id="postalCode" type="text" placeholder="Enter your postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} required />
+                        </div>
+                        <div>
+                            <label htmlFor="address">Address</label>
+                            <input id="address" type="text" placeholder="Enter your address" value={address} onChange={e => setAddress(e.target.value)} required />
+                        </div>
+                        <div>
+                            <label />
+                            <button className="primary" type="submit">Continue</button>
+                        </div>
+                    </>
+                )}
             </form>
         </div>
     )

@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { USER_REGISTER_RESET } from '../actions/types'
 import { register } from '../actions/user'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
@@ -9,11 +11,19 @@ export default function Register(props) {
     const [email, setEmail] = useState("")
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
+    const [emailSentMessage, setEmailSentMessage] = useState("")
 
     const registerReducer = useSelector(state => state.userRegisterReducer)
-    const { loading, error } = registerReducer
+    const { loading, error, userInfo } = registerReducer
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch({ type: USER_REGISTER_RESET })
+        if (userInfo) {
+            setEmailSentMessage(userInfo.data.message)
+        }
+    }, [dispatch, userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -23,6 +33,7 @@ export default function Register(props) {
         else {
             alert("Passwords do not match!")
         }
+        console.log(emailSentMessage);
     }
 
     return (
@@ -55,8 +66,15 @@ export default function Register(props) {
                                 <label />
                                 <button className="primary" type="submit">Create your account</button>
                             </div>
+                            <div>
+                                <label />
+                                <div>Already have an account? {' '}
+                                    <Link to={"/signin"}>Sing In</Link>
+                                </div>
+                            </div>
                         </form>) : (
                         <form className="form" onSubmit={submitHandler}>
+                            {emailSentMessage && <MessageBox variant="success">{emailSentMessage}</MessageBox>}
                             <div>
                                 <h1>Register</h1>
                             </div>
@@ -79,6 +97,12 @@ export default function Register(props) {
                             <div>
                                 <label />
                                 <button className="primary" type="submit">Create your account</button>
+                            </div>
+                            <div>
+                                <label />
+                                <div>Already have an account? {' '}
+                                    <Link to={"/signin"}>Sing In</Link>
+                                </div>
                             </div>
                         </form>
                     )}

@@ -15,6 +15,7 @@ import Order from './views/Order';
 import OrderHistory from './views/OrderHistory';
 import Profile from './views/Profile';
 import PrivateRoute from './components/PrivateRoute';
+import AccountActivation from './views/AccountActivation';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -84,6 +85,7 @@ function App() {
           <Route exact path="/product/:id" component={Product}></Route>
           <Route exact path="/signin" component={Signin}></Route>
           <Route exact path="/register" component={Register}></Route>
+          <Route exact path="/activate/:token" component={AccountActivation}></Route>
           <Route exact path="/shipping" component={Shipping}></Route>
           <Route exact path="/payment" component={Payment}></Route>
           <Route exact path="/placeorder" component={PlaceOrder}></Route>
