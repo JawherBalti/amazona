@@ -114,6 +114,12 @@ const login = (req, res) => {
         })
 }
 
+const getUsers = (req, res) => {
+    User.find()
+    .then(users => res.send(users))
+    .catch(() => res.status(400).send({message: "Could not get users!"}))
+}
+
 const getUser = (req, res) => {
     User.findById(req.params.id)
         .then(user => res.send(user))
@@ -146,5 +152,5 @@ const updateUser = (req, res) => {
         })
         .catch(err => res.status(404).send({ message: "User not found" }))
 }
-module.exports = { register, login, getUser, updateUser, activateAccount }
+module.exports = { register, login, getUser, updateUser, activateAccount, getUsers }
 
