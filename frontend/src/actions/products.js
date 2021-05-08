@@ -9,9 +9,7 @@ import {
 } from './types'
 
 export const getProducts = () => async (dispatch) => {
-    dispatch({
-        type: GET_PRODUCTS_REQUEST
-    })
+    dispatch({ type: GET_PRODUCTS_REQUEST })
     try {
         const request = await axios.get("/api/products")
         dispatch({ type: GET_PRODUCTS_SUCCESS, payload: request.data })
@@ -27,7 +25,7 @@ export const detailsProduct = (productId) => async (dispatch) => {
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: request.data })
     } catch (err) {
         dispatch({
-            type: PRODUCT_DETAILS_FAIL, 
+            type: PRODUCT_DETAILS_FAIL,
             payload: err.response && err.response.data.message ?
                 err.response.data.message : err.message
         })
