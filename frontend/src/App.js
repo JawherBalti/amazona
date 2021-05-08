@@ -16,6 +16,7 @@ import OrderHistory from './views/OrderHistory';
 import Profile from './views/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import AccountActivation from './views/AccountActivation';
+import Users from './views/Users';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -92,7 +93,7 @@ function App() {
           <Route exact path="/order/:id" component={Order}></Route>
           <Route exact path="/orderhistory" component={OrderHistory}></Route>
           <PrivateRoute exact path="/profile" component={Profile}></PrivateRoute>
-
+          <Route exact path="/users" component={Users}></Route>
         </main>
         <footer className="row center">All rights reserved</footer>
     </div>

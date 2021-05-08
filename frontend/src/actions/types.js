@@ -52,3 +52,7 @@ export const USER_SIGNOUT = 'user_signout'
 export const USER_DETAILS_REQUEST = 'user_details_request'
 export const USER_DETAILS_SUCCESS = 'user_details_success'
 export const USER_DETAILS_FAIL = 'user_details_fail'
+
+export const USERS_DETAILS_REQUEST = 'users_details_request'
+export const USERS_DETAILS_SUCCESS = 'users_details_success'
+export const USERS_DETAILS_FAIL = 'users_details_fail'

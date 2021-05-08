@@ -1,4 +1,4 @@
-import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL } from "./types"
+import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USERS_DETAILS_REQUEST, USERS_DETAILS_FAIL, USERS_DETAILS_SUCCESS } from "./types"
 import axios from 'axios'
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -37,6 +37,19 @@ export const signout = () => (dispatch) => {
     localStorage.removeItem("cartItems")
     localStorage.removeItem("shippingAddress")
     dispatch({ type: USER_SIGNOUT })
+}
+
+export const getUsers = () => async (dispatch, getState) => {
+    dispatch({ type: USERS_DETAILS_REQUEST })
+    const { userSignInReducer: { userInfo } } = getState()
+    try {
+        const { data } = await axios.get("/api/user/getusers", {
+            headers: { authorization: `Bearer ${userInfo.data.token}` }
+        })
+        dispatch({ type: USERS_DETAILS_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({ type: USERS_DETAILS_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
+    }
 }
 
 export const userDetailss = (userId) => async (dispatch, getState) => {

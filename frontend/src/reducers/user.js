@@ -1,4 +1,4 @@
-import { USER_UPDATE_RESET, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USER_REGISTER_RESET } from "../actions/types";
+import { USER_UPDATE_RESET, USER_DETAILS_FAIL, USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USER_REGISTER_RESET, USERS_DETAILS_REQUEST, USERS_DETAILS_SUCCESS, USERS_DETAILS_FAIL } from "../actions/types";
 
 export const userRegisterReducer = (state = {}, action) => {
     switch (action.type) {
@@ -37,6 +37,19 @@ export const activateAccountReducer = (state = {}, action) => {
         case ACTIVATE_ACCOUNT_SUCCESS:
             return { loading: false, info: action.payload }
         case ACTIVATE_ACCOUNT_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const getUsersReducer = (state = { loading: true}, action) => {
+    switch (action.type) {
+        case USERS_DETAILS_REQUEST:
+            return { loading: true }
+        case USERS_DETAILS_SUCCESS:
+            return { loading: false, users: action.payload }
+        case USERS_DETAILS_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state
