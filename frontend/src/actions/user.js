@@ -1,4 +1,4 @@
-import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USERS_DETAILS_REQUEST, USERS_DETAILS_FAIL, USERS_DETAILS_SUCCESS } from "./types"
+import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USERS_DETAILS_REQUEST, USERS_DETAILS_FAIL, USERS_DETAILS_SUCCESS, ADMIN_UPDATE_REQUEST, ADMIN_UPDATE_SUCCESS, ADMIN_UPDATE_FAIL, ADMIN_DELETE_REQUEST, ADMIN_DELETE_SUCCESS } from "./types"
 import axios from 'axios'
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -80,3 +80,28 @@ export const updateUser = (user) => async (dispatch, getState) => {
     }
 }
 
+export const adminUpdateUser = (user) => async (dispatch, getState) => {
+    dispatch({ type: USER_UPDATE_REQUEST, payload: user })
+    const { userSignInReducer: { userInfo } } = getState()
+    try {
+        const request = await axios.put(`/api/user/profile/${user._id}`, user, {
+            headers: { authorization: `Bearer ${userInfo.data.token}` }
+        })
+        dispatch({ type: ADMIN_UPDATE_SUCCESS, payload: request })
+    } catch (error) {
+        dispatch({ type: ADMIN_UPDATE_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
+    }
+}
+
+export const adminDeleteUser = (userId) => async (dispatch, getState) => {
+    dispatch({ type: ADMIN_DELETE_REQUEST })
+    const { userSignInReducer: { userInfo } } = getState()
+    try {
+        const { data } = await axios.delete(`/api/user/${userId}`, {
+            headers: { authorization: `Bearer ${userInfo.data.token}` }
+        })
+        dispatch({ type: ADMIN_DELETE_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({ type: ADMIN_UPDATE_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
+    }
+}
