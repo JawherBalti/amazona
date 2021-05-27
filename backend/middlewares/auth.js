@@ -6,7 +6,7 @@ const isAuth = (req, res, next) => {
         const token = authorization.slice(7, authorization.length) //Bearer xxxxxx
         jwt.verify(token, process.env.SECRET, (err, decode) => {
             if(err){
-                res.status(401).send({message: "Invalid token"})
+                res.status(401).send({message: "Session expired. Please login again!"})
             } else {
                 req.user = decode
                 next()

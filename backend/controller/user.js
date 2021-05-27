@@ -11,7 +11,7 @@ const register = async (req, res) => {
     else {
         const token = jwt.sign({ name, email, password },
             process.env.JWT_ACCOUNT_ACTIVATION,
-            { expiresIn: "15m" })
+            { expiresIn: "100m" })
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -159,7 +159,7 @@ const adminUpdateUser = (req, res) => {
 }
 
 const adminDeleteUser = (req, res) => {
-    User.deleteOne(req.params.id)
+    User.findByIdAndDelete(req.params.id)
         .then(user => res.send({ message: "User deleted successfully!" }))
         .catch(err => res.status(400).send({ message: "Could not delete user!" }))
 }
