@@ -116,8 +116,8 @@ const login = (req, res) => {
 
 const getUsers = (req, res) => {
     User.find()
-    .then(users => res.send(users))
-    .catch(() => res.status(400).send({message: "Could not get users!"}))
+        .then(users => res.send(users))
+        .catch(() => res.status(400).send({ message: "Could not get users!" }))
 }
 
 const getUser = (req, res) => {
@@ -127,19 +127,10 @@ const getUser = (req, res) => {
 }
 
 const updateUser = (req, res) => {
-    const saltRounds = 10;
-
     User.findById(req.user._id)
         .then(user => {
             user.name = req.body.name || user.name //if the name field is empty, use the old username
             if (req.body.password) {
-                //     bcrypt.genSalt(saltRounds)
-                //         .then(salt => {
-                //             bcrypt.hash(req.body.password, salt)
-                //                 .then(hash => user.password = hash)
-                //                 .catch(err => res.status(400).send({ message: "error1" }))
-                //         })
-                //         .catch(err => res.status(400).send({ message: "error2" }))
                 user.password = req.body.password
             }
             user.save()
@@ -152,5 +143,26 @@ const updateUser = (req, res) => {
         })
         .catch(err => res.status(404).send({ message: "User not found" }))
 }
-module.exports = { register, login, getUser, updateUser, activateAccount, getUsers }
+
+const adminUpdateUser = (req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+            user.name = req.body.name || user.name //if the name field is empty, use the old username
+            user.isAdmin = req.body.isAdmin
+            user.save()
+            user.generateToken((err, token) => {
+                if (err) return res.status(400).send(err)
+                res.status(200).json({ user, token })
+            })
+        })
+        .catch(err => res.status(404).send({ message: "User not found" }))
+}
+
+const adminDeleteUser = (req, res) => {
+    User.deleteOne(req.params.id)
+        .then(user => res.send({ message: "User deleted successfully!" }))
+        .catch(err => res.status(400).send({ message: "Could not delete user!" }))
+}
+
+module.exports = { register, activateAccount, login, getUsers, getUser, updateUser, adminUpdateUser, adminDeleteUser }
 
