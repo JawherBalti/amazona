@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ADMIN_UPDATE_RESET, USER_DETAILS_RESET } from '../actions/types'
+import { ADMIN_UPDATE_RESET } from '../actions/types'
 import { adminUpdateUser, userDetailss } from '../actions/user'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
@@ -15,8 +15,14 @@ export default function ProfileById(props) {
     const { loading, error, user } = userDetails
     const userUpdate = useSelector(state => state.adminUpdateReducer)
     const { loading: loadingUpdate, error: errorUpadte, success: successUpdate } = userUpdate
-
+    const userSignIn = useSelector(state => state.userSignInReducer)
+    const { userInfo } = userSignIn
+    
     const dispatch = useDispatch()
+
+    if (!userInfo) {
+        props.history.push("/signin")
+    }
 
     useEffect(() => {
         if (successUpdate) {
