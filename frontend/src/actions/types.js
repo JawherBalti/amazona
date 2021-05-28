@@ -30,6 +30,10 @@ export const MY_ORDER_LIST_REQUEST = 'my_order_list_request'
 export const MY_ORDER_LIST_SUCCESS = 'my_order_list_success'
 export const MY_ORDER_LIST_FAIL = 'my_order_list_fail'
 
+export const ORDERS_LIST_REQUEST = 'orders_list_request'
+export const ORDERS_LIST_SUCCESS = 'orders_list_success'
+export const ORDERS_LIST_FAIL = 'orders_list_fail'
+
 export const USER_REGISTER_REQUEST = 'user_register_request'
 export const USER_REGISTER_SUCCESS = 'user_register_success'
 export const USER_REGISTER_FAIL = 'user_register_fail'

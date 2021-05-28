@@ -18,6 +18,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AccountActivation from './views/AccountActivation';
 import Users from './views/Users';
 import ProfileById from './views/ProfileById';
+import Orders from './views/Orders';
 
 function App() {
   const cart = useSelector(state => state.cartReducer)
@@ -70,7 +71,7 @@ function App() {
                   <Link to="/products">Products</Link>
                 </li>
                 <li>
-                  <Link to="/orders">Orders</Link>
+                  <Link to="/allOrders">Orders</Link>
                 </li>
                 <li>
                   <Link to="/users">Users</Link>
@@ -93,6 +94,7 @@ function App() {
           <Route exact path="/placeorder" component={PlaceOrder}></Route>
           <Route exact path="/order/:id" component={Order}></Route>
           <Route exact path="/orderhistory" component={OrderHistory}></Route>
+          <Route exact path="/allOrders" component={Orders}></Route>
           <PrivateRoute exact path="/profile" component={Profile}></PrivateRoute>
           <Route exact path="/profile/:id" component={ProfileById}></Route>
           <Route exact path="/users" component={Users}></Route>
