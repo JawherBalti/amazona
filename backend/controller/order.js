@@ -37,7 +37,7 @@ const updateOrder = (req, res) => {
         .then(order => {
             order.isPaid = true
             order.paidAt = Date.now()
-            order.paymentResult = {
+            order.paymentResult = { //paypal auto generated information
                 id: req.body.id,
                 status: req.body.status,
                 update_time: req.body.update_time,
@@ -50,10 +50,28 @@ const updateOrder = (req, res) => {
         .catch(err => res.status(404).send({ message: "Order not found!" }))
 }
 
-const myOrderList = (req, res) => {
-    Order.find({user: req.user._id})
-    .then(orders => res.send(orders))
-    .catch(err => res.status(404).send({message: "Not Found"}))
+const deliverOrder = (req, res) => {
+    Order.findById(req.params.id)
+        .then(order => {
+            order.isDelivered = true
+            order.deliveredAt = Date.now()
+            order.save()
+                .then(order => res.send({ message: "Order delivered", order }))
+                .catch(err => res.status(400).send({ message: "An error occured!" }))
+        })
+        .catch(err => res.status(404).send({ message: "Order not found!" }))
 }
 
-module.exports = { placeOrder, getOrders, getOrder, updateOrder, myOrderList }
+const myOrderList = (req, res) => {
+    Order.find({ user: req.user._id })
+        .then(orders => res.send(orders))
+        .catch(err => res.status(404).send({ message: "Not Found" }))
+}
+
+const deleteOrder = (req, res) => {
+    Order.findByIdAndDelete(req.params.id)
+        .then(order => res.send({ message: "Order deleted successfully!" }))
+        .catch(err => res.status(400).send({ message: "Could not delete order!" }))
+
+}
+module.exports = { placeOrder, getOrders, getOrder, updateOrder, myOrderList, deleteOrder, deliverOrder }
