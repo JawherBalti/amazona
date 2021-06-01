@@ -1,41 +1,45 @@
 const { User } = require("../models/user")
 const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
-const register = async (req, res) => {
+const saltRounds = 10;
+
+const register = (req, res) => {
     const { name, email, password } = req.body
-    let user = await User.findOne({ email })
-    if (user) {
-        return res.status(500).json({ message: "Email already in use!" })
-    }
-    else {
-        const token = jwt.sign({ name, email, password },
-            process.env.JWT_ACCOUNT_ACTIVATION,
-            { expiresIn: "100m" })
 
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_FROM,
-                pass: process.env.PASSWORD
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(password, salt, function (err, hash) {
+
+            const token = jwt.sign({ name, email, hash },
+                process.env.JWT_ACCOUNT_ACTIVATION,
+                { expiresIn: "5m" }
+            )
+
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL_FROM,
+                    pass: process.env.PASSWORD
+                }
+            })
+            const emailData = {
+                from: process.env.EMAIL_FROM,
+                to: email,
+                subject: "Account activation link",
+                html: `
+                        <h1>Please Click the link to activate your account!</h1>
+                        <a href="http://localhost:3000/activate/${token}">Activate your account</a>
+                        <hr/>
+                        <p>This email contains sensetive information!</p>
+                        <p>${process.env.CLIENT_URL}</p>
+                        `
             }
+            transporter.sendMail(emailData)
+                .then(sent => res.status(200).json({ message: `Account activation link was sent to ${email}` }))
+                .catch(err => res.status(500).json({ message: "Could not send email verification!" }))
         })
-        const emailData = {
-            from: process.env.EMAIL_FROM,
-            to: email,
-            subject: "Account activation link",
-            html: `
-                <h1>Please Click the link to activate your account!</h1>
-                <a href="http://localhost:3000/activate/${token}">Activate your account</a>
-                <hr/>
-                <p>This email contains sensetive information</p>
-                <p>${process.env.CLIENT_URL}</p>
-                `
-        }
-        transporter.sendMail(emailData)
-            .then(sent => res.status(200).json({ message: `Account activation link was sent to ${email}` }))
-            .catch(err => res.status(500).json({ message: "Could not send email verification!" }))
-    }
+    })
 }
 
 const activateAccount = (req, res) => {
@@ -46,7 +50,7 @@ const activateAccount = (req, res) => {
             if (err) {
                 return res.status(498).json({ message: 'Expired link. Please register again!' })
             } else {
-                const { name, email, password } = jwt.decode(token)
+                const { name, email, hash } = jwt.decode(token)
 
                 User.countDocuments({}, function (err, count) {
                     if (err) {
@@ -56,13 +60,13 @@ const activateAccount = (req, res) => {
                             const user = new User({
                                 name,
                                 email,
-                                password,
+                                password: hash,
                                 isAdmin: true
                             })
 
                             user.save((err, user) => {
                                 if (err) {
-                                    return res.status(500).json({ message: "Account already activated, you can now signin!" })
+                                    return res.status(500).json({ message: "Account already activated, you can now signin1!" })
                                 } else {
                                     return res.status(200).json({ message: 'Account activated! You can now signin!' })
                                 }
@@ -71,12 +75,11 @@ const activateAccount = (req, res) => {
                             const user = new User({
                                 name,
                                 email,
-                                password
+                                password: hash
                             })
-
                             user.save((err, user) => {
                                 if (err) {
-                                    return res.status(500).json({ message: "Account already activated, you can now signin!" })
+                                    return res.status(500).json({ message: "Account already activated, you can now signin2!" })
                                 } else {
                                     return res.status(200).json({ message: 'Account activated! You can now signin!' })
                                 }
@@ -96,22 +99,21 @@ const login = (req, res) => {
 
     User.findOne({ email: email })
         .then(user => {
-            user.comparePassword(password, (err, isMatch) => {
-                if (!isMatch) {
-                    return res.status(401).json({ message: "Invalid email or password!" })
-                }
-                user.generateToken((err, token) => {
-                    if (err) {
-                        return res.status(400).send(err)
+            const _id = user._id
+            const name = user.name
+            bcrypt.compare(password, user.password)
+            .then(isMatch => {
+                const token = jwt.sign(
+                    {
+                        _id: user._id,
+                    }, process.env.SECRET,
+                    {
+                        expiresIn: "7d" //token valid for 7 days
                     }
-                    res.status(200).json({ user, token })
-                })
+                )
+                return res.status(200).json({ user: { _id, name }, token })
             })
-        }).catch(err => {
-            return res.status(401).json({
-                message: "Account does not exist!"
-            })
-        })
+        }).catch(err => res.status(401).json({ message: "Account does not exist!" }))
 }
 
 const getUsers = (req, res) => {
