@@ -5,7 +5,7 @@ import { updateUser, userDetailss } from '../actions/user'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
 
-export default function Profile() {
+export default function Profile(props) {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -16,6 +16,10 @@ export default function Profile() {
     const { loading, error, user } = userDetails
     const userUpdate = useSelector(state => state.userUpdateReducer)
     const { loading: loadingUpdate, error: errorUpadte, success: successUpdate } = userUpdate
+
+    if (!userInfo) {
+        props.history.push("/signin")
+    }
 
     const dispatch = useDispatch()
 
