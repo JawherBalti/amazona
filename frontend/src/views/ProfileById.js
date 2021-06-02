@@ -26,8 +26,8 @@ export default function ProfileById(props) {
 
     useEffect(() => {
         if (successUpdate) {
-            dispatch({ type: ADMIN_UPDATE_RESET });
-            props.history.push('/users');
+            dispatch({ type: ADMIN_UPDATE_RESET })
+            props.history.push('/users')
         }
         if (!user) {
             dispatch(userDetailss(userId))
