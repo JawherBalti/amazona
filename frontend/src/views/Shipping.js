@@ -68,7 +68,7 @@ export default function Shipping(props) {
                 {country && (
                     <div>
                         <label htmlFor="city">City</label>
-                        {cityPicker ?
+                        {cityPicker.length > 0 ?
                             (
                                 <select onChange={e => setCity(e.target.value)}>
                                     <option value={city}>{city ? city : "Select your city"}</option>
@@ -76,11 +76,13 @@ export default function Shipping(props) {
                                         <option key={i} value={city.name}>{city.name}</option>
                                     )}
                                 </select>
-                            ) : <select> <option value="">Select your city</option> </select>
+                            ) : (
+                                <input id="city" type="text" placeholder="Enter your city" value={city} onChange={e => setCity(e.target.value)} required />
+                            )
                         }
                     </div>
                 )}
-                {city && (
+                {(city || (country && cityPicker.length === 0)) && (
                     <>
                         <div>
                             <label htmlFor="postalCode">Postal Code</label>
