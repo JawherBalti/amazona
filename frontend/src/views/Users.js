@@ -4,6 +4,7 @@ import { USER_DETAILS_RESET } from '../actions/types'
 import { getUsers, adminDeleteUser } from '../actions/user'
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+import Pagination from '../components/Pagination'
 
 export default function Users(props) {
     const usersReducer = useSelector(state => state.getUsersReducer)
@@ -12,7 +13,17 @@ export default function Users(props) {
     const { userInfo } = userSignIn
     //const deleteReducer = useSelector(state => state.adminDeleteReducer)
     //const { errorDelete, successDelete, loadingDelete } = deleteReducer
+    
     const [userList, setUserList] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [usersPerPage, setUsersPerPage] = useState(9)
+
+    const [pageNumberLimit, setpageNumberLimit] = useState(5)
+    const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5)
+    const [minPageNumberLimit, setminPageNumberLimit] = useState(0)
+
+    const lastOrder = currentPage * usersPerPage
+    const firstOrder = lastOrder - usersPerPage
 
     if (!userInfo) {
         props.history.push("/signin")
@@ -31,9 +42,32 @@ export default function Users(props) {
     const updateHandler = (userId) => {
         props.history.push(`/profile/${userId}`)
     }
+
     const deleteHandler = (userId) => {
         dispatch(adminDeleteUser(userId))
         setUserList(userList.filter(user => user._id !== userId))
+    }
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
+    const handleNextbtn = () => {
+        setCurrentPage(currentPage + 1);
+
+        if (currentPage + 1 > maxPageNumberLimit) {
+            setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+            setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+        }
+    }
+
+    const handlePrevbtn = () => {
+        setCurrentPage(currentPage - 1);
+
+        if ((currentPage - 1) % pageNumberLimit === 0) {
+            setmaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+            setminPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+        }
     }
 
     return (
@@ -52,7 +86,7 @@ export default function Users(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
+                            {users.slice(firstOrder, lastOrder).map(user => (
                                 <tr key={user._id}>
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
@@ -69,6 +103,7 @@ export default function Users(props) {
                             ))}
                         </tbody>
                     </table>}
+                    <Pagination ordersPerPage={usersPerPage} totalOrders={users ? users.length : userList.length} paginate={paginate} currentPage={currentPage} maxPageNumberLimit={maxPageNumberLimit} minPageNumberLimit={minPageNumberLimit} handleNextbtn={handleNextbtn} handlePrevbtn={handlePrevbtn}></Pagination>
         </div>
     )
 }
