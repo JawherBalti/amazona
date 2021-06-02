@@ -33,7 +33,6 @@ export default function Register(props) {
         else {
             alert("Passwords do not match!")
         }
-        console.log(emailSentMessage);
     }
 
     return (
