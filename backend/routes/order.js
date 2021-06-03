@@ -9,5 +9,7 @@ orderRoute.get('/myorder', isAuth, orderController.myOrderList)  //put this befo
 orderRoute.get('/orders', isAuth, orderController.getOrders)
 orderRoute.get("/:id", orderController.getOrder)
 orderRoute.put("/pay/:id", isAuth, orderController.updateOrder)
+orderRoute.put("/deliver/:id", isAuth, orderController.deliverOrder)
+orderRoute.delete("/:id", isAuth, orderController.deleteOrder)
 
 module.exports = orderRoute
