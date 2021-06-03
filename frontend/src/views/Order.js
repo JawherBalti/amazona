@@ -71,7 +71,7 @@ export default function Order(props) {
                                         </p>
                                         {
                                             order.isDelivered ?
-                                                <MessageBox variant="success">Delivered at: {order.deliveredAt}</MessageBox> :
+                                                <MessageBox variant="success">Delivered at: {order.deliveredAt.substring(0, 10)}</MessageBox> :
                                                 <MessageBox variant="danger">Not delivered</MessageBox>
                                         }
                                     </div>
@@ -84,7 +84,7 @@ export default function Order(props) {
                                         </p>
                                         {
                                             order.isPaid ?
-                                                <MessageBox variant="success">Paid at: {order.paidAt}</MessageBox> :
+                                                <MessageBox variant="success">Paid at: {order.paidAt.substring(0, 10)}</MessageBox> :
                                                 <MessageBox variant="danger">Not paid</MessageBox>
                                         }
                                     </div>
