@@ -1,4 +1,4 @@
-import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USERS_DETAILS_REQUEST, USERS_DETAILS_FAIL, USERS_DETAILS_SUCCESS, ADMIN_UPDATE_REQUEST, ADMIN_UPDATE_SUCCESS, ADMIN_UPDATE_FAIL, ADMIN_DELETE_REQUEST, ADMIN_DELETE_SUCCESS } from "./types"
+import { USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, ACTIVATE_ACCOUNT_REQUEST, ACTIVATE_ACCOUNT_SUCCESS, ACTIVATE_ACCOUNT_FAIL, USERS_DETAILS_REQUEST, USERS_DETAILS_FAIL, USERS_DETAILS_SUCCESS, ADMIN_UPDATE_SUCCESS, ADMIN_UPDATE_FAIL, ADMIN_DELETE_REQUEST, ADMIN_DELETE_SUCCESS, ADMIN_DELETE_FAIL, USER_DETAILS_RESET } from "./types"
 import axios from 'axios'
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -37,6 +37,7 @@ export const signout = () => (dispatch) => {
     localStorage.removeItem("cartItems")
     localStorage.removeItem("shippingAddress")
     dispatch({ type: USER_SIGNOUT })
+    dispatch({ type: USER_DETAILS_RESET })
 }
 
 export const getUsers = () => async (dispatch, getState) => {
@@ -102,6 +103,6 @@ export const adminDeleteUser = (userId) => async (dispatch, getState) => {
         })
         dispatch({ type: ADMIN_DELETE_SUCCESS, payload: data })
     } catch (error) {
-        dispatch({ type: ADMIN_UPDATE_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
+        dispatch({ type: ADMIN_DELETE_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message })
     }
 }
