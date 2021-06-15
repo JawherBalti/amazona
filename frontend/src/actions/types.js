@@ -26,9 +26,18 @@ export const ORDER_PAY_SUCCESS = 'order_pay_success'
 export const ORDER_PAY_FAIL = 'order_pay_fail'
 export const ORDER_PAY_RESET = 'order_pay_reset'
 
+export const ORDER_DELIVER_REQUEST = 'order_deliver_request'
+export const ORDER_DELIVER_SUCCESS = 'order_deliver_success'
+export const ORDER_DELIVER_FAIL = 'order_deliver_fail'
+export const ORDER_DELIVER_RESET = 'order_deliver_reset'
+
 export const MY_ORDER_LIST_REQUEST = 'my_order_list_request'
 export const MY_ORDER_LIST_SUCCESS = 'my_order_list_success'
 export const MY_ORDER_LIST_FAIL = 'my_order_list_fail'
+
+export const ORDER_DELETE_REQUEST = 'order_delete_request'
+export const ORDER_DELETE_SUCCESS = 'order_delete_success'
+export const ORDER_DELETE_FAIL = 'order_delete_fail'
 
 export const ORDERS_LIST_REQUEST = 'orders_list_request'
 export const ORDERS_LIST_SUCCESS = 'orders_list_success'
