@@ -102,17 +102,21 @@ const login = (req, res) => {
             const _id = user._id
             const name = user.name
             bcrypt.compare(password, user.password)
-            .then(isMatch => {
-                const token = jwt.sign(
-                    {
-                        _id: user._id,
-                    }, process.env.SECRET,
-                    {
-                        expiresIn: "7d" //token valid for 7 days
+                .then(isMatch => {
+                    if (isMatch) {
+                        const token = jwt.sign(
+                            {
+                                _id: user._id,
+                            }, process.env.SECRET,
+                            {
+                                expiresIn: "7d" //token valid for 7 days
+                            })
+                        return res.status(200).json({ user: { _id, name }, token })
                     }
-                )
-                return res.status(200).json({ user: { _id, name }, token })
-            })
+                    else {
+                        return res.status(401).send({ message: "Wrong email or password!" })
+                    }
+                })
         }).catch(err => res.status(401).json({ message: "Account does not exist!" }))
 }
 
@@ -133,15 +137,21 @@ const updateUser = (req, res) => {
         .then(user => {
             user.name = req.body.name || user.name //if the name field is empty, use the old username
             if (req.body.password) {
-                user.password = req.body.password
-            }
-            user.save()
-                .then(user => {
-                    user.generateToken((err, token) => {
-                        if (err) return res.status(400).send(err)
-                        res.status(200).json({ user, token })
+                bcrypt.genSalt(saltRounds, function (err, salt) {
+                    bcrypt.hash(req.body.password, salt, function (err, hash) {
+                        user.password = hash
+                        user.save()
+                            .then(user => {
+                                const token = jwt.sign(
+                                    { _id: user._id }, process.env.SECRET, {
+                                    expiresIn: "7d" //token valid for 7 days 
+                                })
+                                return res.status(200).json({ user, token })
+                            })
+                            .catch(err => res.status(400).send(err))
                     })
                 })
+            }
         })
         .catch(err => res.status(404).send({ message: "User not found" }))
 }
@@ -152,10 +162,8 @@ const adminUpdateUser = (req, res) => {
             user.name = req.body.name || user.name //if the name field is empty, use the old username
             user.isAdmin = req.body.isAdmin
             user.save()
-            user.generateToken((err, token) => {
-                if (err) return res.status(400).send(err)
-                res.status(200).json({ user, token })
-            })
+            .then(() => res.status(200).json({ message: "Changes saved!" }))
+            .catch(err => res.status(400).send({ message: "Could not save changes!" }))
         })
         .catch(err => res.status(404).send({ message: "User not found" }))
 }
